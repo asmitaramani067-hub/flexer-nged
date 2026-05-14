@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { EstimatorInput, EstimatorResult } from '@/types/estimator';
+import { EstimatorInput, EarningEstimationResponse } from '@/lib/estimator';
 import ResultsDisplay from './ResultsDisplay';
 
 const inputClass =
@@ -20,7 +20,7 @@ export default function EstimatorForm() {
     heat_pump_kw: 0,
   });
 
-  const [result, setResult] = useState<EstimatorResult | null>(null);
+  const [result, setResult] = useState<EarningEstimationResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
