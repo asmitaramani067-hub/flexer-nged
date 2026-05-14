@@ -8,6 +8,7 @@
  */
 
 import { Pool } from 'pg';
+import { queryWithRetry } from './db';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const BATTERY_EFFICIENCY          = 0.95;
@@ -149,7 +150,7 @@ async function fetchRows(pool: Pool, cmzCode: string): Promise<RawRow[]> {
     WHERE  tov."cmzCode"  = $1
     AND    tov.valid_to IS NULL
   `;
-  const result = await pool.query<RawRow>(query, [cmzCode]);
+  const result = await queryWithRetry<RawRow>(query, [cmzCode]);
   return result.rows;
 }
 

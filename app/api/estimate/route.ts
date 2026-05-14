@@ -28,9 +28,24 @@ export async function POST(request: NextRequest) {
     const result = await calculateEarnings(pool, input);
 
     return NextResponse.json(result);
-  } catch (error) {
+  } catch (error: any) {
     console.error('[estimate] Error:', error);
-    const message = error instanceof Error ? error.message : 'Internal server error';
-    return NextResponse.json({ error: message }, { status: 500 });
+    
+    // Provide more helpful error messages
+    let message = 'Internal server error';
+    let status = 500;
+    
+    if (error.message?.includes('timeout') || error.message?.includes('terminated')) {
+      message = 'Database connection timeout. The database may be starting up. Please try again in a moment.';
+      status = 503; // Service Unavailable
+    } else if (error.message?.includes('ECONNREFUSED')) {
+      message = 'Unable to connect to database. Please check your configuration.';
+      status = 503;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    
+    return NextResponse.json({ error: message }, { status });
   }
 }
+
