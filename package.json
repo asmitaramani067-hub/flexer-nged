@@ -11,7 +11,7 @@
     "test-db": "npx tsx scripts/test-db.ts",
     "migrate-live": "npx tsx scripts/migrate-live-batch.ts",
     "export-data": "npx tsx scripts/export-to-json.ts",
-    "import-data": "npx tsx scripts/import-from-json.ts"
+    "import-data": "npx tsx scripts/import-bulk.ts"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",
