@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed-db": "npx tsx scripts/seed-neon.ts",
+    "test-db": "npx tsx scripts/test-db.ts"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",
