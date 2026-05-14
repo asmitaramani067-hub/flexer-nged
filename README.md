@@ -1,68 +1,74 @@
-# NGED CMZ Earning Estimator - Frontend
+# NGED CMZ Earning Estimator
 
-A Next.js frontend application for calculating potential earnings from energy assets in NGED CMZ zones.
+A Next.js application for calculating potential earnings from energy assets in NGED CMZ zones. Built with TypeScript, Tailwind CSS, and PostgreSQL.
 
 ## Features
 
-- Clean, responsive UI built with Next.js 15 and Tailwind CSS
-- Custom design system with Garet/Dosis fonts
-- Brand color palette (Atlantis greens, Orient blues, Sand neutrals, Gold accents)
-- Dark mode support with gradient backgrounds
-- Smooth animations (float, shimmer, stat-pop, heartbeat-ping)
-- Scroll reveal effects for engaging UX
-- Input form for hardware specifications (battery, inverter, solar, EV, heat pump)
-- CMZ code selection
-- Real-time earnings calculation
-- Detailed results display showing eligible competitions and projected earnings
-- Animated earnings counter
+- **Modern UI** - Clean, responsive design with Decent Energy brand theme
+- **Real-time Calculations** - Instant earnings estimates based on asset specifications
+- **Database Integration** - Neon PostgreSQL with historical competition data
+- **Asset Support** - Battery, Solar, EV Charger, Heat Pump, Inverter
+- **Competition Analysis** - UP/DOWN trade opportunities with detailed breakdowns
+- **Pagination** - Load more functionality for competition results
+- **Custom Design System** - Garet/Dosis fonts, brand colors, smooth animations
+- **TypeScript** - Full type safety across the application
 
-## Getting Started
+## Quick Start
 
 ### Prerequisites
 
 - Node.js 20.x or higher
 - npm or yarn
+- Neon PostgreSQL database (configured)
 
 ### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/asmitaramani067-hub/flexer-nged.git
+cd flexer-nged/nged-cmz-estimator
+
+# Install dependencies
 npm install
-```
 
-### Font Setup
+# Set up environment variables
+cp .env.local.example .env.local
+# Edit .env.local with your DATABASE_URL
 
-The application uses the Garet font (self-hosted). Place your Garet font files in `public/fonts/`:
-- `garet-book.woff2` (Weight 400)
-- `garet-heavy.woff2` (Weight 800)
+# Seed the database
+npm run seed-db
 
-See `public/fonts/README.md` for details. The Dosis font loads automatically from Google Fonts.
-
-### Configuration
-
-Create a `.env.local` file in the root directory:
-
-```env
-BACKEND_API_URL=http://localhost:8000/api/estimate
-```
-
-Replace the URL with your actual backend API endpoint.
-
-### Development
-
-Run the development server:
-
-```bash
+# Start development server
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Production Build
+### Environment Variables
 
-```bash
-npm run build
-npm start
+Create a `.env.local` file:
+
+```env
+DATABASE_URL=postgresql://neondb_owner:npg_4xuzRdIin6Vc@ep-noisy-glitter-aqec9x6k.c-8.us-east-1.aws.neon.tech/neondb?sslmode=require
 ```
+
+See [DATABASE.md](./DATABASE.md) for detailed database configuration.
+
+## Usage
+
+1. Enter your **CMZ Code** (e.g., `CMZ_T10A_EM_0097`) - **Required**
+2. Enter asset capacities (all optional):
+   - Battery Capacity (kWh)
+   - Inverter Capacity (kW)
+   - Solar Capacity (kW)
+   - EV Charger Capacity (kW)
+   - Heat Pump Capacity (kW)
+3. Click **Calculate Earnings**
+4. View results:
+   - Total UP/DOWN capacity
+   - Eligible competitions
+   - Earnings breakdown
+   - Grand total earnings
 
 ## Project Structure
 
@@ -71,61 +77,90 @@ nged-cmz-estimator/
 ├── app/
 │   ├── api/
 │   │   └── estimate/
-│   │       └── route.ts          # API route proxy to backend
-│   ├── layout.tsx
-│   └── page.tsx                  # Main page
+│   │       └── route.ts          # API endpoint
+│   ├── layout.tsx                # Root layout
+│   ├── page.tsx                  # Main page
+│   └── globals.css               # Global styles
 ├── components/
-│   ├── EstimatorForm.tsx         # Input form component
-│   └── ResultsDisplay.tsx        # Results display component
+│   ├── EstimatorForm.tsx         # Input form
+│   ├── ResultsDisplay.tsx        # Results display
+│   ├── Header.tsx                # Header component
+│   └── LoadingSpinner.tsx        # Loading state
+├── lib/
+│   ├── estimator.ts              # Earnings calculation logic
+│   └── db.ts                     # Database connection
+├── scripts/
+│   ├── seed-neon.ts              # Database seeding
+│   ├── test-db.ts                # Connection testing
+│   ├── check-schema.ts           # Schema inspection
+│   └── migrate-to-neon.ts        # Data migration
 ├── types/
-│   └── estimator.ts              # TypeScript interfaces
-└── .env.local                    # Environment variables
+│   └── estimator.ts              # TypeScript types
+└── public/
+    └── fonts/                    # Garet font files
 ```
 
-## API Integration
+## Database
 
-The frontend communicates with the backend through the `/api/estimate` endpoint, which proxies requests to your backend service. Update the `BACKEND_API_URL` environment variable to point to your backend.
+The application uses **Neon PostgreSQL** with three main tables:
+- `trade_opportunity_versions` - Competition opportunities
+- `nged_windows` - Competition windows
+- `nged_delivery_periods` - Delivery time slots
 
-### Expected Backend Response Format
+See [DATABASE.md](./DATABASE.md) for:
+- Schema details
+- Seeding instructions
+- Query examples
+- Migration guide
 
-```json
-{
-  "total_up_capacity_mw": 0.015,
-  "total_down_capacity_mw": 0.010,
-  "eligible_competitions": [
-    {
-      "competition_name": "Peak Demand Response",
-      "window_start": "2024-01-15T17:00:00Z",
-      "window_end": "2024-01-15T19:00:00Z",
-      "direction": "UP",
-      "reward_rate_per_mwh": 150.00,
-      "capacity_mw": 0.015,
-      "duration_hours": 2.0,
-      "earnings_gbp": 4.50
-    }
-  ],
-  "total_earnings_gbp": 4.50
-}
+## Deployment
+
+Deploy to Vercel in minutes:
+
+1. Import project from GitHub
+2. Set `DATABASE_URL` environment variable
+3. Deploy
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
+
+## Scripts
+
+```bash
+npm run dev        # Start development server
+npm run build      # Build for production
+npm run start      # Start production server
+npm run lint       # Run ESLint
+npm run seed-db    # Seed database with sample data
+npm run test-db    # Test database connection
 ```
 
-## Technologies Used
+## Technologies
 
 - **Next.js 15** - React framework with App Router
 - **TypeScript** - Type safety
-- **Tailwind CSS v4** - Styling with custom design system
-- **@tailwindcss/typography** - Enhanced typography
-- **React** - UI components
-- **Custom Design System** - Garet/Dosis fonts, brand colors, animations
+- **Tailwind CSS v4** - Styling
+- **PostgreSQL** - Database (Neon)
+- **pg** - PostgreSQL client
+- **React 19** - UI library
 
 ## Design System
 
-See [DESIGN.md](./DESIGN.md) for complete design system documentation including:
-- Typography (Garet/Dosis fonts)
-- Color palette (Atlantis, Orient, Sand, Gold)
-- Light/Dark mode
-- Animations (heartbeat-ping, float-slow, shimmer, stat-pop)
-- Scroll reveal system
-- Component patterns
+The application follows the Decent Energy brand theme:
+
+- **Fonts:** Garet (headings), Dosis (body)
+- **Colors:** Blue Dark (#0c4f70), Green Light (#a4c853), Gold (#f5c842), Sand (#f5f1e9)
+- **Animations:** Heartbeat-ping, float-slow, shimmer, stat-pop
+- **Scroll Reveals:** Up, left, right, scale, fade
+
+See [DESIGN.md](./DESIGN.md) for complete design documentation.
+
+## Documentation
+
+- [QUICKSTART.md](./QUICKSTART.md) - Quick setup guide
+- [DATABASE.md](./DATABASE.md) - Database configuration
+- [DEPLOYMENT.md](./DEPLOYMENT.md) - Deployment guide
+- [DESIGN.md](./DESIGN.md) - Design system
+- [FONTS_SETUP.md](./FONTS_SETUP.md) - Font configuration
 
 ## License
 
