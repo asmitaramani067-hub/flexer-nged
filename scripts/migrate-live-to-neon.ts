@@ -23,7 +23,7 @@ const livePool = new Pool({
 // Target: Neon DB
 const neonPool = new Pool({
   connectionString: process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_4xuzRdIin6Vc@ep-noisy-glitter-aqec9x6k.c-8.us-east-1.aws.neon.tech/neondb?sslmode=require',
-  ssl: { rejectUnauthorized: false, require: true },
+  ssl: { rejectUnauthorized: false },
   max: 5,
   connectionTimeoutMillis: 30000, // 30 seconds
   idleTimeoutMillis: 30000,

@@ -16,7 +16,7 @@ const sourcePool = new Pool({
 // Target: Neon DB
 const targetPool = new Pool({
   connectionString: 'postgresql://neondb_owner:npg_4xuzRdIin6Vc@ep-noisy-glitter-aqec9x6k.c-8.us-east-1.aws.neon.tech/neondb?sslmode=require',
-  ssl: { rejectUnauthorized: false, require: true },
+  ssl: { rejectUnauthorized: false },
 });
 
 async function migrate() {

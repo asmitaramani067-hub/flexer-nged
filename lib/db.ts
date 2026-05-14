@@ -9,10 +9,7 @@ export function getPool(): Pool {
     if (process.env.DATABASE_URL) {
       pool = new Pool({
         connectionString: process.env.DATABASE_URL,
-        ssl: {
-          rejectUnauthorized: false,
-          require: true,
-        },
+        ssl: { rejectUnauthorized: false },
         max: 5,
         idleTimeoutMillis: 30_000,
         connectionTimeoutMillis: 5_000,
@@ -25,7 +22,7 @@ export function getPool(): Pool {
         database: process.env.DB_NAME     || 'neondb',
         user:     process.env.DB_USER     || 'neondb_owner',
         password: process.env.DB_PASSWORD || 'npg_4xuzRdIin6Vc',
-        ssl:      { rejectUnauthorized: false, require: true },
+        ssl:      { rejectUnauthorized: false },
         max:      5,
         idleTimeoutMillis: 30_000,
         connectionTimeoutMillis: 5_000,
