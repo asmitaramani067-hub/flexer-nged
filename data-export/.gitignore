@@ -1,0 +1,2 @@
+# Ignore exported JSON data files (too large for git)
+*.json
