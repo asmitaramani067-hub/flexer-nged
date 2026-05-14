@@ -1,26 +1,143 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: 'Garet';
+  src: url('/fonts/garet-book.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@font-face {
+  font-family: 'Garet';
+  src: url('/fonts/garet-heavy.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Tailwind v4 theme tokens ─────────────────────────────────────────────── */
+@theme {
+  /* Fonts — generates font-sans / font-heading utilities */
+  --font-sans:    'Dosis', sans-serif;
+  --font-heading: 'Garet', sans-serif;
+
+  /* ── Brand primaries ─────────────────────────────────────────────────────── */
+  --color-sand:       #f5f1e9;
+  --color-green-light: #a4c853;
+  --color-green-dark:  #67943f;
+  --color-blue-light:  #4279a0;
+  --color-blue-dark:   #0c4f70;
+  --color-peach:       #f88c64;
+  --color-gold:        #f5c842;
+  --color-body-text:   #57534e;
+
+  /* ── Atlantis scale (greens — UI primary) ────────────────────────────────── */
+  --color-atlantis-50:  #f6fce9;
+  --color-atlantis-100: #ebf8ce;
+  --color-atlantis-200: #d8f1a3;
+  --color-atlantis-300: #bfe66d;
+  --color-atlantis-400: #a4c853;
+  --color-atlantis-500: #84b32a;
+  --color-atlantis-600: #67943f;
+  --color-atlantis-700: #4f7131;
+  --color-atlantis-800: #415a2b;
+  --color-atlantis-900: #384d27;
+  --color-atlantis-950: #1c2a11;
+
+  /* ── Orient scale (blues) ────────────────────────────────────────────────── */
+  --color-orient-50:  #eef6fb;
+  --color-orient-100: #d5e9f4;
+  --color-orient-200: #aed3ea;
+  --color-orient-300: #7ab5d8;
+  --color-orient-400: #4279a0;
+  --color-orient-500: #2d6a94;
+  --color-orient-600: #0c4f70;
+  --color-orient-700: #0a3c55;
+  --color-orient-800: #07293a;
+  --color-orient-900: #051e2b;
+  --color-orient-950: #03111a;
+
+  /* ── Sand scale (neutrals) ───────────────────────────────────────────────── */
+  --color-sand-50:  #f5f1e9;
+  --color-sand-100: #ebe4d6;
+  --color-sand-200: #d9cab0;
+  --color-sand-300: #c4ab84;
+  --color-sand-400: #b39162;
+  --color-sand-500: #a57f54;
+  --color-sand-600: #8f6848;
+  --color-sand-700: #76523d;
+  --color-sand-800: #624437;
+  --color-sand-900: #533b31;
+  --color-sand-950: #2f1f19;
+
+  /* ── Gold scale (yellows — CTA accent) ───────────────────────────────────── */
+  --color-gold-50:  #fefce8;
+  --color-gold-100: #fef9c3;
+  --color-gold-200: #fef08a;
+  --color-gold-300: #fde047;
+  --color-gold-400: #f5c842;
+  --color-gold-500: #eab308;
+  --color-gold-600: #ca8a04;
+  --color-gold-700: #a16207;
+  --color-gold-800: #854d0e;
+  --color-gold-900: #713f12;
+  --color-gold-950: #422006;
 }
 
+/* ─── Base styles ───────────────────────────────────────────────────────────── */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Dosis', sans-serif;
+  background-color: #f5f1e9;   /* sand */
+  color: #57534e;               /* body-text */
 }
+
+/* Heading utility — Garet, uppercase, tracked */
+.font-heading {
+  font-family: 'Garet', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ─── Custom animations ─────────────────────────────────────────────────────── */
+@keyframes heartbeat-ping {
+  0%, 100% { transform: scale(1);    opacity: 1;   }
+  50%       { transform: scale(1.05); opacity: 0.8; }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0);     }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes stat-pop {
+  0%   { transform: scale(0.8); opacity: 0;   }
+  50%  { transform: scale(1.05);              }
+  100% { transform: scale(1);   opacity: 1;   }
+}
+
+@keyframes draw-line {
+  to { stroke-dashoffset: 0; }
+}
+
+.animate-heartbeat-ping { animation: heartbeat-ping 2s ease-in-out infinite; }
+.animate-float-slow     { animation: float-slow 6s ease-in-out infinite; }
+.animate-shimmer        { animation: shimmer 3s linear infinite; background-size: 200% 100%; }
+.animate-stat-pop       { animation: stat-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* ─── Scroll-reveal system ──────────────────────────────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-reveal].revealed            { opacity: 1; transform: none; }
+[data-reveal="up"]                { transform: translateY(30px); }
+[data-reveal="left"]              { transform: translateX(-30px); }
+[data-reveal="right"]             { transform: translateX(30px); }
+[data-reveal="scale"]             { transform: scale(0.9); }

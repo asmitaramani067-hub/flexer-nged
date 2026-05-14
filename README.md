@@ -1,36 +1,132 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NGED CMZ Earning Estimator - Frontend
+
+A Next.js frontend application for calculating potential earnings from energy assets in NGED CMZ zones.
+
+## Features
+
+- Clean, responsive UI built with Next.js 15 and Tailwind CSS
+- Custom design system with Garet/Dosis fonts
+- Brand color palette (Atlantis greens, Orient blues, Sand neutrals, Gold accents)
+- Dark mode support with gradient backgrounds
+- Smooth animations (float, shimmer, stat-pop, heartbeat-ping)
+- Scroll reveal effects for engaging UX
+- Input form for hardware specifications (battery, inverter, solar, EV, heat pump)
+- CMZ code selection
+- Real-time earnings calculation
+- Detailed results display showing eligible competitions and projected earnings
+- Animated earnings counter
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20.x or higher
+- npm or yarn
+
+### Installation
+
+```bash
+npm install
+```
+
+### Font Setup
+
+The application uses the Garet font (self-hosted). Place your Garet font files in `public/fonts/`:
+- `garet-book.woff2` (Weight 400)
+- `garet-heavy.woff2` (Weight 800)
+
+See `public/fonts/README.md` for details. The Dosis font loads automatically from Google Fonts.
+
+### Configuration
+
+Create a `.env.local` file in the root directory:
+
+```env
+BACKEND_API_URL=http://localhost:8000/api/estimate
+```
+
+Replace the URL with your actual backend API endpoint.
+
+### Development
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+nged-cmz-estimator/
+├── app/
+│   ├── api/
+│   │   └── estimate/
+│   │       └── route.ts          # API route proxy to backend
+│   ├── layout.tsx
+│   └── page.tsx                  # Main page
+├── components/
+│   ├── EstimatorForm.tsx         # Input form component
+│   └── ResultsDisplay.tsx        # Results display component
+├── types/
+│   └── estimator.ts              # TypeScript interfaces
+└── .env.local                    # Environment variables
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Integration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The frontend communicates with the backend through the `/api/estimate` endpoint, which proxies requests to your backend service. Update the `BACKEND_API_URL` environment variable to point to your backend.
 
-## Deploy on Vercel
+### Expected Backend Response Format
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```json
+{
+  "total_up_capacity_mw": 0.015,
+  "total_down_capacity_mw": 0.010,
+  "eligible_competitions": [
+    {
+      "competition_name": "Peak Demand Response",
+      "window_start": "2024-01-15T17:00:00Z",
+      "window_end": "2024-01-15T19:00:00Z",
+      "direction": "UP",
+      "reward_rate_per_mwh": 150.00,
+      "capacity_mw": 0.015,
+      "duration_hours": 2.0,
+      "earnings_gbp": 4.50
+    }
+  ],
+  "total_earnings_gbp": 4.50
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Technologies Used
+
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type safety
+- **Tailwind CSS v4** - Styling with custom design system
+- **@tailwindcss/typography** - Enhanced typography
+- **React** - UI components
+- **Custom Design System** - Garet/Dosis fonts, brand colors, animations
+
+## Design System
+
+See [DESIGN.md](./DESIGN.md) for complete design system documentation including:
+- Typography (Garet/Dosis fonts)
+- Color palette (Atlantis, Orient, Sand, Gold)
+- Light/Dark mode
+- Animations (heartbeat-ping, float-slow, shimmer, stat-pop)
+- Scroll reveal system
+- Component patterns
+
+## License
+
+MIT
